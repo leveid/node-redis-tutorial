@@ -9,7 +9,12 @@ var client = redis.createClient(6379, "127.0.0.1");
 client.on('connect', function() {
 	console.log('connected to redis');
 
-	// set a simple key-value pair
+
+	/*========================================
+	=            redis data types            =
+	========================================*/
+
+	// store a simple key-value pair
 	client.set('framework', 'AngularJS', function (err, reply) {
 		if(err) {
 			console.log(err);
@@ -98,4 +103,73 @@ client.on('connect', function() {
 
 		console.log(reply);
 	});
+
+	/*=====  End of redis data types  ======*/
+
+
+	/*=========================================
+	=            redis opeerations            =
+	=========================================*/
+
+	// check if a key exists
+	client.exists('framework', function (err, reply) {
+	    if(err) {
+			console.log(err);
+			return;
+		}
+
+		if (reply === 1) console.log('key exists');
+		else console.log('key does not exist');
+	});
+
+	// delete a key
+	client.del('zoot', function (err, reply) {
+	    if(err) {
+			console.log(err);
+			return;
+		}
+
+		console.log(reply);
+	});
+
+	// expire a key after 30sec
+	client.set('framework', 30);
+
+	// increment a key
+	client.set('key1', 10, function (err, reply) {
+		if(err) {
+			console.log(err);
+			return;
+		}
+
+		console.log(reply);
+
+		// increment by 1
+		client.incr('key1', function (err, reply) {
+			if(err) {
+				console.log(err);
+				return;
+			}
+
+			console.log(reply);
+		});
+
+		// increment by whatever you want
+		client.incrby('key1', 10,  function (err, reply) {
+			if(err) {
+				console.log(err);
+				return;
+			}
+
+			console.log(reply);
+		});
+
+		// similalry there is decr() and decrby()
+	});
+
+
+	/*=====  End of redis opeerations  ======*/
+
+
+
 });
