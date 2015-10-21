@@ -58,6 +58,44 @@ client.on('connect', function() {
 		console.log(object);
 	});
 
-	// storing lists
+	// store a list called 'languages'
+	client.rpush(['languages', 'english', 'french', 'hindi'], function (err, reply) {
+		if(err) {
+			console.log(err);
+			return;
+		}
 
+		console.log(reply);
+	});
+
+	// retrieve the list we just stored
+	// pass -1 as the 3rd argument if you want to print the full list
+	client.lrange('languages', 0, 3, function (err, reply) {
+		if(err) {
+			console.log(err);
+			return;
+		}
+
+		console.log(reply);
+	});
+
+	// store a set (a list without duplicates)
+	client.sadd(['tags', 'angularjs', 'backbone', 'ember'], function (err, reply) {
+		if(err) {
+			console.log(err);
+			return;
+		}
+
+		console.log(reply);
+	});
+
+	// retrieve th set we just stored
+	client.smembers('tags', function (err, reply) {
+	    if(err) {
+			console.log(err);
+			return;
+		}
+
+		console.log(reply);
+	});
 });
